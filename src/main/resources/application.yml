@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: boilerplate
+  data:
+    mongodb:
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DB:iztechnology}
+      
+logging:
+  level:
+    root: INFO
+    '[id.iztechnology.boilerplate]': DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+external-service:
+  url: ${EXTERNAL_SERVICE_URL:http://external-service}
+  timeout: 5000
