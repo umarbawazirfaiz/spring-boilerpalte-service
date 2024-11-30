@@ -32,8 +32,9 @@ public class LoggingInterceptor implements HandlerInterceptor {
         LogContext context = LogContext.builder()
             .level("INFO")
             .traceId(UUID.randomUUID().toString())
-            .path(request.getRequestURL().toString())
+            .path(request.getServletPath())
             .method(request.getMethod())
+            .serviceName("boilerplate")
             .request(requestInfo)
             .startTime(startTime)
             .build();

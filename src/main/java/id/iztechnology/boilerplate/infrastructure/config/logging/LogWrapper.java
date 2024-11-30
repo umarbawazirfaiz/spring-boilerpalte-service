@@ -87,10 +87,15 @@ public class LogWrapper {
         return rootCause;
     }
 
-    public void info(LogContext context) {
+    public void info(String message) {
         try {
-            setContextValues(context);
-            logger.info(objectMapper.writeValueAsString(context));
+            LogContext context = LogContextHolder.getContext();
+            context.setLevel("INFO");
+            context.setMessage(message);
+            context.setRequest(null);
+            context.setResponse(null);
+            context.setProcessTime(System.currentTimeMillis() - context.getStartTime());
+            log(context, null);
         } catch (Exception e) {
             logger.error("Error logging info message", e);
         } finally {
@@ -98,10 +103,30 @@ public class LogWrapper {
         }
     }
 
-    public void error(LogContext context, Throwable throwable) {
+    public void info(String format, Object... args) {
         try {
-            setContextValues(context);
-            logger.error(objectMapper.writeValueAsString(context), throwable);
+            LogContext context = LogContextHolder.getContext();
+            String formattedMessage = String.format(format, args);
+            context.setLevel("INFO");
+            context.setMessage(formattedMessage);
+            context.setRequest(null);
+            context.setResponse(null);
+            context.setProcessTime(System.currentTimeMillis() - context.getStartTime());
+            log(context, null);
+        } catch (Exception e) {
+            logger.error("Error logging info message", e);
+        } finally {
+            ThreadContext.clearAll();
+        }
+    }
+
+    public void error(String message, Throwable throwable) {
+        try {
+            LogContext context = LogContextHolder.getContext();
+            context.setMessage(message);
+            context.setRequest(null);
+            context.setResponse(null);
+            log(context, throwable);
         } catch (Exception e) {
             logger.error("Error logging error message", e);
         } finally {

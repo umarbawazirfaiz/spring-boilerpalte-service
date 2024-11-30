@@ -31,6 +31,7 @@ public class LogContext {
     private String path;
     private String method;
     private String serviceName;
+    private String message;
     private RequestInfo request;
     private ResponseInfo response;
     private ErrorInfo errorInfo;
